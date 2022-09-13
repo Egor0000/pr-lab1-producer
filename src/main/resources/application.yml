@@ -1,7 +1,14 @@
 spring:
   application:
-    name: pr-lab1-producer-dev
+    name: ${APP_NAME:pr-lab1-producer-dev}
 
 server:
-  address: 0.0.0.0
-  port: 8070
+  address: ${ADDRESS:0.0.0.0}
+  port: ${PORT:8077}
+
+consumer:
+  address: ${CONSUMER_ADDRESS:localhost}
+  port: ${CONSUMER_PORT:8088}
+
+dinning:
+  tables: ${TABLE_COUNT:10}

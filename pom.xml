@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>md.utm.isa.pr.lab1</groupId>
-	<artifactId>producer</artifactId>
+	<artifactId>pr-lab1-producer</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>producer</name>
+	<name>pr-lab1-producer</name>
 	<description>Producer (Dinning Hall) for Network Programming Lab. 1 </description>
 	<properties>
 		<java.version>11</java.version>
@@ -19,7 +19,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
 		</dependency>
 
 		<dependency>
