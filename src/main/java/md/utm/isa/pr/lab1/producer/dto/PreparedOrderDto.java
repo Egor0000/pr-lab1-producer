@@ -12,8 +12,11 @@ public class PreparedOrderDto {
     private Long waiterId;
     private List<Long> items;
     private Integer priority;
-    private Long maxWait;
-    private Timestamp pickUpTime;
+    private Double maxWait;
+    private Long pickUpTime;
     private Long cookingTime;
     private List<CookingDetailDto> cookingDetails;
+
+    //fixme to delete as it is not in the doc
+    private Long sendTime;
 }

@@ -41,14 +41,24 @@ Order_total_preparing_time = order_pick_up_timestamp - order_serving_timestamp
 
 ## Checkpoint 1 (Producer)
 - [x] Repository
-- [] README.md
+- [x] README.md
 - [x] webserver
 - [x] docker
-- [] Communication with Consumer
+- [x] Communication with Consumer
   - [x] Send POST request
-  - [] Receive ready orders 
-  - [] Logs for receiving
-  - [] Logs for sending
+  - [x] Receive ready orders 
+  - [x] Logs for receiving
+  - [x] Logs for sending
 - [x] Table logic (basic)
   - [x] Add threads
   - [x] Generate random orders
+
+## Checkpoint 2 (Producer)
+- [] Finis producer logic
+  - [] Finish order producing logic
+    - [] Add Table state system
+    - [] Add waiter logic
+  - [] Finish prepared order receiving logic
+
+
+* 

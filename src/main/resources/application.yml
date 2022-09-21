@@ -12,3 +12,6 @@ consumer:
 
 dinning:
   tables: ${TABLE_COUNT:10}
+  waiters: ${WAITER_COUNT:4}
+  time-unit: ${TIME_UNIT:1}
+  time-duration: ${TIME_DURATION:100}

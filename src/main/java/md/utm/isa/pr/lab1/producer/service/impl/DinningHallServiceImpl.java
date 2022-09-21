@@ -3,6 +3,7 @@ package md.utm.isa.pr.lab1.producer.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import md.utm.isa.pr.lab1.producer.dto.OrderDto;
+import md.utm.isa.pr.lab1.producer.dto.PreparedOrderDto;
 import md.utm.isa.pr.lab1.producer.entity.Food;
 import md.utm.isa.pr.lab1.producer.service.DinningHallService;
 import md.utm.isa.pr.lab1.producer.utils.MenuUtil;
@@ -19,6 +20,10 @@ import java.net.URI;
 import java.net.URL;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ConcurrentMap;
 
 @Service
 @Slf4j
@@ -33,6 +38,8 @@ public class DinningHallServiceImpl implements DinningHallService {
     private WebClient webClient;
 
     private List<Food> menu;
+
+    private ConcurrentHashMap<Long, ConcurrentLinkedQueue<PreparedOrderDto>> preparedOrderLists = new ConcurrentHashMap<>();
 
     public DinningHallServiceImpl() {
         this.menu = MenuUtil.getMenu();
@@ -57,7 +64,7 @@ public class DinningHallServiceImpl implements DinningHallService {
     @Override
     public String sendOrder(OrderDto order) {
         if (webClient != null) {
-            log.info("Send order {}", order);
+            log.info("Send order {}. Time for sending {}", order, (System.currentTimeMillis() - order.getPickUpTime()));
             Mono<String> response = webClient.post()
                     .uri(String.format("%s:%s%s", address, port, path))
                     .body(BodyInserters.fromValue(order))
@@ -67,6 +74,27 @@ public class DinningHallServiceImpl implements DinningHallService {
 
             return response.block();
         }
+        return null;
+    }
+
+    @Override
+    public void receivePreparedOrder(PreparedOrderDto orderDto) {
+        log.info("Received prepared order {}", orderDto);
+
+        if (preparedOrderLists.get(orderDto.getWaiterId()) == null) {
+            preparedOrderLists.put(orderDto.getWaiterId(), new ConcurrentLinkedQueue<>());
+        }
+        preparedOrderLists.get(orderDto.getWaiterId()).add(orderDto);
+    }
+
+    @Override
+    public PreparedOrderDto getNextPreparedOrder(int waiterId) {
+        ConcurrentLinkedQueue<PreparedOrderDto> waiterOrders = preparedOrderLists.get((long) waiterId);
+
+        if (waiterOrders!=null) {
+            return waiterOrders.poll();
+        }
+
         return null;
     }
 

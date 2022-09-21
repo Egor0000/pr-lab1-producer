@@ -13,6 +13,6 @@ public class OrderDto {
     private Long waiterId;
     private List<Long> items;
     private Integer priority;
-    private Long maxWait;
-    private Timestamp pickUpTime;
+    private Double maxWait;
+    private Long pickUpTime;
 }
