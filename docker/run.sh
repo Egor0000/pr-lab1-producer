@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 export LAB1_PRODUCER_HOME=/app/pr-lab1-producer
-export LAB1_PRODUCER_VERSION=pr-lab1-producer:latest
+export LAB1_PRODUCER_VERSION=ideaprojects-producer:latest
 export LAB1_PRODUCER_PROFILE=default
 export PORT=8075
 export CONSUMER_PORT=8085
