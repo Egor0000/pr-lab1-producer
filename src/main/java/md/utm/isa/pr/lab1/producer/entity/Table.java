@@ -66,7 +66,7 @@ public class Table implements Runnable {
         orderDto.setOrderId(OrderUtil.getNextOrderId());
 
         //todo what is the max number of items?
-        List<Food> randomList = restaurantMenu.getRandomFoods(ThreadLocalRandom.current().nextInt(1, 14));
+        List<Food> randomList = restaurantMenu.getRandomFoods(ThreadLocalRandom.current().nextInt(1, 6));
 
         orderDto.setItems(randomList.stream()
                 .map(Food::getId)
@@ -81,9 +81,9 @@ public class Table implements Runnable {
     }
 
     private void occupyTable () {
-        int idleTime = ThreadLocalRandom.current().nextInt(1, 6);
+        int idleTime = ThreadLocalRandom.current().nextInt(10, 20);
         try {
-            Thread.sleep(idleTime*1000L);
+            Thread.sleep(idleTime*timeunit);
             tableState = TableState.OCCUPIED;
             occupiedTables.add(this);
 
@@ -97,7 +97,7 @@ public class Table implements Runnable {
         if (checkOrder(orderDto)) {
             log.info("Order (id={}) served successfully to table (id={}). Table moved to state IDLE", orderDto.getOrderId(), thread);
             Long prepTime =  System.currentTimeMillis() - orderDto.getPickUpTime() - orderDto.getSendTime();
-            log.info("Order total preparation time = {}. Rating = {}", prepTime, getRating(orderDto.getMaxWait(), prepTime, 100));
+            log.info("Order total preparation time = {}. Rating = {}", prepTime, getRating(orderDto.getMaxWait(), prepTime, timeunit));
             tableState = TableState.IDLE;
             return true;
         }
@@ -110,6 +110,7 @@ public class Table implements Runnable {
         // todo add more validations
         log.info("Prepared time for order (id={}) is {}, maxWait = {}", orderDto.getOrderId(), orderDto.getCookingTime() - orderDto.getPickUpTime(), orderDto.getMaxWait()*1.3*100);
         log.info("Average rating {}", tableService.getAverage((double) (orderDto.getCookingTime() - orderDto.getPickUpTime())/(orderDto.getMaxWait()*1.3*100)));
+        log.info("Rating: {} stars", tableService.ratingToStar((double) (orderDto.getCookingTime() - orderDto.getPickUpTime())/(orderDto.getMaxWait()*1.3*100)));
         if (orderDto.getTableId() == thread) {
             return true;
         }
