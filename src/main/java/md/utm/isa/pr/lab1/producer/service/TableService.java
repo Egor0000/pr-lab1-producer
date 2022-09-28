@@ -13,4 +13,6 @@ public interface TableService{
     void removeTableFromWait(int id);
 
     double getAverage(double next);
+
+    int ratingToStar(double rating);
 }
